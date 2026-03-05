@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>IotSec</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        background: #000;
+        color: #f5f5f5;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .page {
+        max-width: 720px;
+        padding: 2rem;
+        text-align: center;
+      }
+
+      h1 {
+        font-family: "Courier New", monospace;
+        font-size: 3rem;
+        margin-bottom: 1.5rem;
+        letter-spacing: 0.16em;
+        color: #dde4e5;
+        text-shadow: 0 0 14px rgba(254, 255, 255, 0.6);
+      }
+
+      p {
+        line-height: 1.7;
+        font-size: 1.05rem;
+        color: #e0e0e0;
+        margin-top: 0.75rem;
+      }
+
+      .cursor {
+        display: inline-block;
+        width: 0.6ch;
+        text-align: left;
+        animation: blink 0.9s steps(1, end) infinite;
+      }
+
+      @keyframes blink {
+        0%,
+        50% {
+          opacity: 1;
+        }
+        50.01%,
+        100% {
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <h1>IotSec</h1>
+      <p
+        id="intro"
+        data-text="Internet of Things (IoT) security is about protecting all the smart, connected devices around you—such as cameras, lights, sensors, and appliances—from being accessed or controlled by attackers. Good IoT security reduces the risk of people spying on you, stealing your data, or using your devices to attack other systems."
+      ></p>
+      <p style="margin-top: 2rem">
+        <a href="blog.html" style="color: #00e5ff; text-decoration: none"
+          >Go to Blog</a
+        >
+      </p>
+    </main>
+
+    <script>
+      const introEl = document.getElementById("intro");
+      const introText = introEl.getAttribute("data-text");
+
+      const typingSpeed = 20; // ms per letter (faster)
+
+      function typeText(element, text, onDone) {
+        element.textContent = "";
+        let i = 0;
+
+        const cursor = document.createElement("span");
+        cursor.className = "cursor";
+        cursor.textContent = "▌";
+        element.appendChild(cursor);
+
+        const interval = setInterval(() => {
+          if (i >= text.length) {
+            clearInterval(interval);
+            cursor.remove();
+            if (onDone) onDone();
+            return;
+          }
+
+          cursor.before(text[i]);
+          i++;
+        }, typingSpeed);
+      }
+
+      window.addEventListener("DOMContentLoaded", () => {
+        typeText(introEl, introText);
+      });
+    </script>
+  </body>
+</html>
+
