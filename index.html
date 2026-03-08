@@ -2,9 +2,22 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>IotSec</title>
+    <title>IotSec | IoT Security</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <style>
+      :root {
+        --bg: #0a0a0f;
+        --surface: rgba(255, 255, 255, 0.03);
+        --border: rgba(255, 255, 255, 0.08);
+        --text: #f5f5f5;
+        --text-muted: #94a3b8;
+        --accent: #22d3ee;
+        --accent-dim: rgba(34, 211, 238, 0.15);
+      }
+
       * {
         box-sizing: border-box;
         margin: 0;
@@ -12,81 +25,339 @@
       }
 
       body {
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-          sans-serif;
-        background: #000;
-        color: #f5f5f5;
+        font-family: "Inter", system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--text);
         min-height: 100vh;
+        line-height: 1.6;
+      }
+
+      /* Background layer */
+      .bg-layer {
+        position: fixed;
+        inset: 0;
+        background: var(--bg) url("assets/background.png") no-repeat center center;
+        background-size: cover;
+        z-index: -2;
+      }
+      .bg-layer::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(10,10,15,0.7) 0%, rgba(10,10,15,0.4) 50%, rgba(10,10,15,0.9) 100%);
+        z-index: -1;
+      }
+
+      /* Nav */
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1.25rem 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-logo {
+        font-weight: 700;
+        font-size: 1.25rem;
+        letter-spacing: 0.05em;
+        color: var(--text);
+        text-decoration: none;
+      }
+      .nav-links {
+        display: flex;
+        gap: 2rem;
+      }
+      .nav-links a {
+        color: var(--text-muted);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.95rem;
+      }
+      .nav-links a:hover {
+        color: var(--accent);
+      }
+
+      /* Hero */
+      .hero {
+        text-align: center;
+        padding: 5rem 2rem 4rem;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      .hero h1 {
+        font-size: clamp(2.5rem, 5vw, 3.5rem);
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        letter-spacing: -0.02em;
+        line-height: 1.15;
+      }
+      .hero .tagline {
+        font-size: 1.15rem;
+        color: var(--text-muted);
+        margin-bottom: 2rem;
+        min-height: 4em;
+      }
+      .hero .cursor {
+        display: inline-block;
+        width: 0.5ch;
+        animation: blink 0.9s steps(1, end) infinite;
+        color: var(--accent);
+      }
+      @keyframes blink {
+        0%, 50% { opacity: 1; }
+        50.01%, 100% { opacity: 0; }
+      }
+      .btn {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+        background: var(--accent);
+        color: var(--bg);
+        font-weight: 600;
+        text-decoration: none;
+        border-radius: 0.5rem;
+        font-size: 0.95rem;
+        transition: opacity 0.2s, transform 0.2s;
+      }
+      .btn:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
+      }
+      .btn-outline {
+        background: transparent;
+        color: var(--accent);
+        border: 1px solid var(--accent);
+      }
+
+      /* Section common */
+      section {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 4rem 2rem;
+      }
+      .section-label {
+        font-size: 0.8rem;
+        font-weight: 600;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 0.75rem;
+      }
+      .section-title {
+        font-size: clamp(1.75rem, 3vw, 2.25rem);
+        font-weight: 700;
+        margin-bottom: 1rem;
+        letter-spacing: -0.02em;
+      }
+      .section-desc {
+        color: var(--text-muted);
+        margin-bottom: 2.5rem;
+        max-width: 600px;
+      }
+
+      /* Beyond the Standard - feature cards */
+      .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+      }
+      .feature-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        transition: border-color 0.2s, box-shadow 0.2s;
+      }
+      .feature-card:hover {
+        border-color: rgba(34, 211, 238, 0.3);
+        box-shadow: 0 0 24px var(--accent-dim);
+      }
+      .feature-card h3 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+      .feature-card p {
+        font-size: 0.95rem;
+        color: var(--text-muted);
+      }
+
+      /* Impact section - grid of value props */
+      .impact-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 1.5rem;
+      }
+      .impact-item {
+        display: flex;
+        gap: 1rem;
+        align-items: flex-start;
+        padding: 1.25rem;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 0.75rem;
+      }
+      .impact-item .icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        background: var(--accent-dim);
+        border-radius: 0.5rem;
+        flex-shrink: 0;
         display: flex;
         align-items: center;
         justify-content: center;
+        color: var(--accent);
+        font-weight: 700;
+        font-size: 1rem;
+      }
+      .impact-item h3 {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+      }
+      .impact-item p {
+        font-size: 0.9rem;
+        color: var(--text-muted);
       }
 
-      .page {
-        max-width: 720px;
-        padding: 2rem;
+      /* Footer CTA */
+      .footer-cta {
         text-align: center;
+        padding: 4rem 2rem;
+        border-top: 1px solid var(--border);
       }
-
-      h1 {
-        font-family: "Courier New", monospace;
-        font-size: 3rem;
+      .footer-cta h2 {
+        font-size: clamp(1.5rem, 2.5vw, 2rem);
+        font-weight: 700;
+        margin-bottom: 0.75rem;
+      }
+      .footer-cta p {
+        color: var(--text-muted);
         margin-bottom: 1.5rem;
-        letter-spacing: 0.16em;
-        color: #dde4e5;
-        text-shadow: 0 0 14px rgba(254, 255, 255, 0.6);
       }
-
-      p {
-        line-height: 1.7;
-        font-size: 1.05rem;
-        color: #e0e0e0;
-        margin-top: 0.75rem;
+      .footer-bottom {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        border-top: 1px solid var(--border);
       }
-
-      .cursor {
-        display: inline-block;
-        width: 0.6ch;
-        text-align: left;
-        animation: blink 0.9s steps(1, end) infinite;
+      .footer-bottom .logo {
+        font-weight: 700;
+        color: var(--text);
+        text-decoration: none;
       }
-
-      @keyframes blink {
-        0%,
-        50% {
-          opacity: 1;
-        }
-        50.01%,
-        100% {
-          opacity: 0;
-        }
+      .footer-links {
+        display: flex;
+        gap: 1.5rem;
+      }
+      .footer-links a {
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 0.9rem;
+      }
+      .footer-links a:hover {
+        color: var(--accent);
       }
     </style>
   </head>
   <body>
-    <main class="page">
-      <h1>IotSec</h1>
-      <p
-        id="intro"
-        data-text="Internet of Things (IoT) security is about protecting all the smart, connected devices around you—such as cameras, lights, sensors, and appliances—from being accessed or controlled by attackers. Good IoT security reduces the risk of people spying on you, stealing your data, or using your devices to attack other systems."
-      ></p>
-      <p style="margin-top: 2rem">
-        <a href="blog.html" style="color: #00e5ff; text-decoration: none"
-          >Go to Blog</a
-        >
-      </p>
-    </main>
+    <div class="bg-layer"></div>
+
+    <nav class="nav">
+      <a href="index.html" class="nav-logo">IotSec</a>
+      <div class="nav-links">
+        <a href="blog.html">Blog</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+
+    <header class="hero">
+      <h1>Securing the Internet of Things</h1>
+      <p class="tagline" id="intro" data-text="IoT security is about protecting smart, connected devices—cameras, sensors, appliances—from being accessed or controlled by attackers. Good IoT security reduces the risk of espionage, data theft, and your devices being used to attack others."></p>
+      <a href="#contact" class="btn">Contact Us</a>
+    </header>
+
+    <section>
+      <p class="section-label">Beyond the Standard</p>
+      <h2 class="section-title">Why IoT Security Matters</h2>
+      <p class="section-desc">You deserve more than default passwords and forgotten firmware. Elevate your device security beyond checking the box.</p>
+      <div class="features">
+        <div class="feature-card">
+          <h3>Device Hardening</h3>
+          <p>Change default credentials, disable unused services, and lock down each device like a real target—so attackers don’t get in first.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Network Segmentation</h3>
+          <p>Keep IoT on a separate network from critical systems. Isolate smart devices so a compromise doesn’t become a full breach.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Firmware & Updates</h3>
+          <p>Track and apply security patches. We help you stay on top of updates so known vulnerabilities don’t linger.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Monitoring & Visibility</h3>
+          <p>Know what’s talking to what. Get visibility into device behavior and alerts when something looks wrong.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-label">Impact-Driven Approach</p>
+      <h2 class="section-title">Combining best practices and clarity</h2>
+      <p class="section-desc">Methodical, transparent, and focused on reducing real risk—not just paperwork.</p>
+      <div class="impact-grid">
+        <div class="impact-item">
+          <span class="icon">1</span>
+          <div>
+            <h3>Clear Priorities</h3>
+            <p>We help you triage what to fix first so your team can act on what matters most.</p>
+          </div>
+        </div>
+        <div class="impact-item">
+          <span class="icon">2</span>
+          <div>
+            <h3>Actionable Reports</h3>
+            <p>No fluff—concrete steps and evidence so you can remediate and verify fixes.</p>
+          </div>
+        </div>
+        <div class="impact-item">
+          <span class="icon">3</span>
+          <div>
+            <h3>Ongoing Guidance</h3>
+            <p>Security doesn’t stop at assessment. We support policies and habits that last.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer-cta" id="contact">
+      <h2>Secure your devices before attackers do</h2>
+      <p>Stay secure with IotSec. Reach out for guidance or a tailored security review.</p>
+      <a href="mailto:contact@iotsec.example" class="btn">Contact Us</a>
+    </footer>
+
+    <div class="footer-bottom">
+      <a href="index.html" class="logo">IotSec</a>
+      <div class="footer-links">
+        <a href="blog.html">Blog</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
 
     <script>
       const introEl = document.getElementById("intro");
       const introText = introEl.getAttribute("data-text");
+      const typingSpeed = 25;
 
-      const typingSpeed = 20; // ms per letter (faster)
-
-      function typeText(element, text, onDone) {
+      function typeText(element, text) {
         element.textContent = "";
         let i = 0;
-
         const cursor = document.createElement("span");
         cursor.className = "cursor";
         cursor.textContent = "▌";
@@ -96,19 +367,16 @@
           if (i >= text.length) {
             clearInterval(interval);
             cursor.remove();
-            if (onDone) onDone();
             return;
           }
-
           cursor.before(text[i]);
           i++;
         }, typingSpeed);
       }
 
-      window.addEventListener("DOMContentLoaded", () => {
+      document.addEventListener("DOMContentLoaded", () => {
         typeText(introEl, introText);
       });
     </script>
   </body>
 </html>
-
