@@ -1,1 +1,2 @@
-# iot-sec.github.io
+[# iot-sec.github.io
+](https://iotsecz.github.io/iot/)
